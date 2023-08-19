@@ -16,7 +16,7 @@ int main(void) {
 
 	Sm_server* server = NULL;
 
-	Tm_window* main_window = tm_window(1, 1, scr_cols - 2, scr_rows - 2);
+	Tm_window* main_window = tm_window(0, 0, scr_cols, scr_rows);
 	tm_win_flags(main_window, TM_FLAG_SCROLL, 1);
 
 	tm_win_attrib(main_window, TM_ATTRIB_FG_BLUE, 1);
@@ -28,7 +28,7 @@ int main(void) {
 	tm_win_update(main_window);
 
 	Tm_window* main_window_text = tm_window(1, 1, tm_win_get_columns(main_window) - 2, tm_win_get_rows(main_window) - 2);
-	Tm_window* main_window_input = tm_window(0, tm_win_get_rows(main_window_text) - 1, tm_win_get_columns(main_window_text), 1);
+	Tm_window* main_window_input = tm_window(0, tm_win_get_rows(main_window) - 1, tm_win_get_columns(main_window), 1);
 
 	tm_win_parent(main_window, main_window_text, TM_CHILD_NORMAL);
 	tm_win_parent(main_window, main_window_input, TM_CHILD_NORMAL);
