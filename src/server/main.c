@@ -1,6 +1,7 @@
 #include <sockmanip.h>
 #include <termmanip.h>
-#include <memory.h>
+#include <string.h>
+#include <stdio.h>
 
 #define KIWITALK_PORT "47831"
 
