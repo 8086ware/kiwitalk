@@ -55,8 +55,8 @@ int main(void) {
 				char ip[128];
 				char port[16];
 
-				if(getnameinfo((struct sockaddr*)&addr, addr_len, ip, 128, port, 16, NI_NUMERICHOST) == 0) {
-					tm_print("Connection from %s:%s\n", ip, port);
+				if(getnameinfo((struct sockaddr*)&addr, addr_len, ip, 128, port, 16, 0) == 0) {
+					tm_print("Connection from %s:%s with username %s\n", ip, port, names[sm_get_server_client_amount(server) - 1]);
 				}
 			}
 	
