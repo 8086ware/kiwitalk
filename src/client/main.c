@@ -18,14 +18,9 @@ int main(void) {
 
 	Tm_window* main_window = tm_window(0, 0, scr_cols, scr_rows);
 	tm_win_flags(main_window, TM_FLAG_SCROLL, 1);
-
-	tm_win_attrib(main_window, TM_ATTRIB_FG_BLUE, 1);
+	tm_win_flags(main_window, TM_FLAG_INPUTBLOCK | TM_FLAG_ECHO, 0);
 
 	tm_win_border(main_window);
-
-	tm_win_attrib(main_window, TM_ATTRIB_FG_BLUE, 0);
-
-	tm_win_update(main_window);
 
 	Tm_window* main_window_text = tm_window(1, 1, tm_win_get_columns(main_window) - 2, tm_win_get_rows(main_window) - 2);
 	Tm_window* main_window_input = tm_window(0, tm_win_get_rows(main_window) - 1, tm_win_get_columns(main_window), 1);
