@@ -7,6 +7,8 @@
 
 int main(void) {
 	tm_init();
+	tm_flags(TM_FLAG_SCROLL, 1);
+
 	Sm_server* server = sm_server(NULL, KIWITALK_PORT, SM_SERVER_CREATE, SM_TCP);
 
 	if(server == NULL) {
