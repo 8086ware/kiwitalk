@@ -68,8 +68,63 @@ int main(void) {
 			input_amount++;
 		}
 
-			else {
-				connected = 1;
+		if(finished_input) {
+			finished_input = 0;
+
+			tm_win_clear(main_window_input);
+			tm_win_print(main_window_input, "> ");
+
+			if(*command == '/') {
+				char* arg1;
+				char* arg2;
+				char* arg3;
+				char* arg4;
+				char* arg5;
+
+				arg1 = strtok(command, " ");
+				arg2 = strtok(NULL, " ");
+				arg3 = strtok(NULL, " ");
+				arg4 = strtok(NULL, " ");
+				arg5 = strtok(NULL, " ");
+
+				if(strcmp(arg1, "/help") == 0) {
+					tm_win_print(main_window_text, "COMMANDS:\n\nconnect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\nexit - Exit kiwitalk\n");
+				}
+
+				else if(strcmp(arg1, "/exit") == 0) {
+					tm_win_free(main_window);
+					tm_exit();
+					return 0;
+				}
+
+				else if(strcmp(arg1, "/connect") == 0) {
+					if(arg2 == NULL || arg3 == NULL) {
+						tm_win_print(main_window_text, "No username or IP entered\n");
+						tm_win_update(main_window);
+					}
+
+					else {
+						tm_win_print(main_window_text, "Attempting to connect...\n");
+						tm_win_update(main_window);
+
+						server = sm_server(arg2, KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP);
+
+						if(server == NULL) {
+							tm_win_print(main_window_text, "Couldn't connect to server %s.\n", arg2);
+						}
+
+						else {
+							sm_send(sm_get_server_socket(server), arg3, 256, -1);
+							connected = 1;
+						}
+					}
+				}
+			}
+
+			else if(connected) {
+				if(*command != '\0') {
+					sm_send(sm_get_server_socket(server), command, strlen(command) + 1, 0);
+				}
 			}
 		}
 
