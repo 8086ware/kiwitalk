@@ -129,7 +129,15 @@ int main(void) {
 		}
 
 		if(connected) {
-			
+			char receive_buffer[4096];
+			int receive_bytes = sm_receive(sm_get_server_socket(server), receive_buffer, 4096, 0);
+
+			receive_buffer[receive_bytes] = '\0';
+
+			if(receive_bytes > 0) {
+				tm_win_print(main_window_text, receive_buffer);
+				tm_win_print(main_window_text, "\n");
+			}
 		}
 
 		tm_win_update(main_window);
