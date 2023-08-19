@@ -32,45 +32,41 @@ int main(void) {
 
 	tm_win_update(main_window_text);
 
+	int input_amount = 0;
+	_Bool finished_input = 0;
+
+	tm_win_print(main_window_input, "> ");
 	while(menu) {
 		char command[1024];
 
-		tm_win_clear(main_window_input);
-		tm_win_print(main_window_input, "> ");
-		tm_win_input_str(main_window_input, command, 1024);
-		tm_win_print(main_window_text, "\n");
+		int c = tm_win_input_ch(main_window_input);
 
-		char* arg1;
-		char* arg2;
-		char* arg3;
-		char* arg4;
-		char* arg5;
-
-		arg1 = strtok(command, " ");
-		arg2 = strtok(NULL, " ");
-		arg3 = strtok(NULL, " ");
-		arg4 = strtok(NULL, " ");
-		arg5 = strtok(NULL, " ");
-
-		if(strcmp(arg1, "/help") == 0) {
-			tm_win_print(main_window_text, "COMMANDS:\n\nconnect [HOSTNAME] - Will ask for a server hostname to connect to\nexit - Exit kiwitalk");
+		if(c == '\n' || c == '\r') {
+			command[input_amount] = '\0';
+			finished_input = 1;
+			input_amount = 0;
 		}
 
-		else if(strcmp(arg1, "/exit") == 0) {
-			tm_win_free(main_window);
-			tm_exit();
-			return 0;
-		}
+		else if(c == '\b' || c == '\127') {
+			if(input_amount > 0) {
+				input_amount--;
 
-		else if(strcmp(arg1, "/connect") == 0) {
-			tm_win_print(main_window_text, "Attempting to connect...\n");
-			tm_win_update(main_window);
+				command[input_amount] = '\0';
 
-			server = sm_server(arg2, KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP);
-
-			if(server == NULL) {
-				tm_win_print(main_window_text, "Couldn't connect to server %s.\n", arg2);
+				int temp_x = tm_win_get_cursor_x(main_window_input);
+				int temp_y = tm_win_get_cursor_y(main_window_input);
+				tm_win_cursor(main_window_input, temp_x - 1, temp_y);
+				tm_win_print(main_window_input, " ");
+				tm_win_cursor(main_window_input, temp_x - 1, temp_y);
 			}
+		}
+
+		else if(c != 0) {
+			tm_win_print(main_window_input,"%c", c);
+			tm_win_update(main_window_input);
+			command[input_amount] = c;
+			input_amount++;
+		}
 
 			else {
 				connected = 1;
