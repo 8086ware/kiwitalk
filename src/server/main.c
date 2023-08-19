@@ -67,5 +67,22 @@ int main(void) {
 			tm_attrib(TM_ATTRIB_FG_GREEN, 0);
 			tm_update();
 		}
+
+		for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+			char receive_buf[4096];
+			int bytes_received = sm_receive(sm_get_client_socket(*sm_get_server_client(server, i)), receive_buf, 4096, 0);
+
+			if(bytes_received > 0) {
+				char send_buf[4096];
+				int bytes_to_send = sprintf(send_buf, "<%s> %s", names[i], receive_buf);
+
+				tm_print("(SENDING TO ALL CLIENTS) %s\n", send_buf);
+				tm_update();
+
+				for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+					sm_send(sm_get_client_socket(*sm_get_server_client(server, i)), send_buf, bytes_to_send, 0);
+				}
+			}
+		}
 	}
 }
