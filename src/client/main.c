@@ -28,8 +28,8 @@ int main(void) {
 	tm_win_parent(main_window, main_window_text, TM_CHILD_NORMAL);
 	tm_win_parent(main_window, main_window_input, TM_CHILD_NORMAL);
 
-	tm_win_print(main_window_text, "-- KIWITALK --\n\nWelcome. Type /help for list of commands.");
-	
+	tm_win_print(main_window_text, "-- KIWITALK --\n\nWelcome. Type /help for list of commands.\n");
+
 	tm_win_update(main_window_text);
 
 	while(menu) {
