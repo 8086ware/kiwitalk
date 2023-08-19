@@ -21,8 +21,30 @@ int main(void) {
 	tm_print("Listening on port %s\n", KIWITALK_PORT);
 	tm_update();
 
+	char** names = NULL;
+	
 	while(1) {
-		if(sm_new_client(server, 10)) {
+		if(sm_new_client(server, 0)) {
+			names = realloc(names, sizeof(char*) * sm_get_server_client_amount(server));
+
+			if(names == NULL) {
+				tm_print("Memory error");
+				tm_input_ch();
+				tm_exit();
+				return 2;
+			}
+
+			names[sm_get_server_client_amount(server) - 1] = malloc(256);
+
+			if(names[sm_get_server_client_amount(server) - 1] == NULL) {
+				tm_print("Memory error");
+				tm_input_ch();
+				tm_exit();
+				return 3;
+			}
+
+			sm_receive(sm_get_client_socket(*sm_get_server_client(server, sm_get_server_client_amount(server) - 1)), names[sm_get_server_client_amount(server) - 1], 256, -1);
+
 			struct sockaddr_storage addr;
 			memset(&addr, 0, sizeof(addr));
 			socklen_t addr_len = sizeof(addr);
