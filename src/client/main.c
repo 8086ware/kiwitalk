@@ -135,8 +135,10 @@ int main(void) {
 			receive_buffer[receive_bytes] = '\0';
 
 			if(receive_bytes > 0) {
+				tm_win_attrib(main_window_text, TM_ATTRIB_FG_BRIGHTGREEN, 1);
 				tm_win_print(main_window_text, receive_buffer);
 				tm_win_print(main_window_text, "\n");
+				tm_win_attrib(main_window_text, TM_ATTRIB_FG_BRIGHTGREEN, 0);
 			}
 		}
 
