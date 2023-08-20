@@ -53,10 +53,9 @@ int main(void) {
 
 			if(getsockname(sm_get_client_socket(*sm_get_server_client(server, sm_get_server_client_amount(server) - 1)), (struct sockaddr*)&addr, &addr_len) != -1) {
 				char ip[128];
-				char port[16];
 
-				if(getnameinfo((struct sockaddr*)&addr, addr_len, ip, 128, port, 16, 0) == 0) {
-					tm_print("Connection from %s:%s with username %s\n", ip, port, names[sm_get_server_client_amount(server) - 1]);
+				if(getnameinfo((struct sockaddr*)&addr, addr_len, ip, 128, NULL, 0, NI_NUMERICHOST) == 0) {
+					tm_print("Connection from %s with username %s\n", ip, names[sm_get_server_client_amount(server) - 1]);
 				}
 			}
 	
