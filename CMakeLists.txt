@@ -17,6 +17,9 @@ target_link_libraries(kiwitalk PRIVATE sockmanip)
 target_link_libraries(kiwitalk_server PRIVATE termmanip)
 target_link_libraries(kiwitalk_server PRIVATE sockmanip)
 
+install(TARGETS sockmanip DESTINATION lib)
+install(FILES include/sockmanip.h DESTINATION include)
+
 if(WIN32) 
 	target_link_libraries(kiwitalk PRIVATE ws2_32)
 	target_link_libraries(kiwitalk_server PRIVATE ws2_32)
