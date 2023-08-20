@@ -107,7 +107,7 @@ int main(void) {
 						tm_win_print(main_window_text, "Attempting to connect...\n");
 						tm_win_update(main_window);
 
-						server = sm_server(arg2, KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP);
+						server = sm_server(arg2, KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP, SM_IPV4);
 
 						if(server == NULL) {
 							tm_win_print(main_window_text, "Couldn't connect to server %s.\n", arg2);

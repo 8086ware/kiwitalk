@@ -10,7 +10,7 @@ int main(void) {
 	tm_flags(TM_FLAG_SCROLL, 1);
 
 	sm_win_init();
-	Sm_server* server = sm_server(NULL, KIWITALK_PORT, SM_SERVER_CREATE, SM_TCP);
+	Sm_server* server = sm_server(NULL, KIWITALK_PORT, SM_SERVER_CREATE, SM_TCP, SM_IPV4);
 
 	if(server == NULL) {
 		tm_print("Couldn't host server on port %s. Is another program using the port?", KIWITALK_PORT);
