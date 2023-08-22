@@ -47,7 +47,7 @@ int main(void) {
 			input_amount = 0;
 		}
 
-		else if(c == '\b' || c == '\127') {
+		else if(c == '\b' || c == '\177') {
 			if(input_amount > 0) {
 				input_amount--;
 
