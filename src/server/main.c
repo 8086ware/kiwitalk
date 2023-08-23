@@ -45,23 +45,13 @@ int main(void) {
 
 			sm_receive(sm_get_client_socket(*sm_get_server_client(server, sm_get_server_client_amount(server) - 1)), names[sm_get_server_client_amount(server) - 1], 256, -1);
 
-			struct sockaddr_storage addr;
-			memset(&addr, 0, sizeof(addr));
-			socklen_t addr_len = sizeof(addr);
-
 			tm_attrib(TM_ATTRIB_FG_GREEN, 1);
 
-			if(getsockname(sm_get_client_socket(*sm_get_server_client(server, sm_get_server_client_amount(server) - 1)), (struct sockaddr*)&addr, &addr_len) != -1) {
-				char ip[128];
+			char ip[128];
+			
+			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, NULL, NI_NUMERICHOST);
 
-				if(getnameinfo((struct sockaddr*)&addr, addr_len, ip, 128, NULL, 0, NI_NUMERICHOST) == 0) {
-					tm_print("Connection from %s with username %s\n", ip, names[sm_get_server_client_amount(server) - 1]);
-				}
-			}
-	
-			else {
-				tm_print("Connection from Unknown Host (Couldn't get socket name!\n");
-			}
+			tm_print("%s Joined the chat from %s\n", names[sm_get_server_client_amount(server) - 1], ip);
 
 			tm_attrib(TM_ATTRIB_FG_GREEN, 0);
 			tm_update();
