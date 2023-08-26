@@ -163,6 +163,8 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 					else {
 						sm_send(sm_get_server_socket(tab->server), input_args[2], 256, -1);
 						tab->connected = 1;
+
+						tm_win_print(tab->window_text, "Successfully connected to server %s\n", input_args[2]);
 					}
 				}
 			}
