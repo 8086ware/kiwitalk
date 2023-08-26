@@ -49,7 +49,7 @@ int main(void) {
 
 			char ip[128];
 			
-			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, NULL, NI_NUMERICHOST);
+			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, 0, NI_NUMERICHOST);
 
 			tm_print("%s Joined the chat from %s\n", names[sm_get_server_client_amount(server) - 1], ip);
 
