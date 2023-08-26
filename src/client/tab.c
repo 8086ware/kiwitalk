@@ -138,6 +138,10 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 				else if(strcmp(input_args[1], "new") == 0) {
 					new_tab(tabs, tab_amount);
 				}
+
+				else if(strcmp(input_args[1], "list") == 0) {
+					tm_win_print(tab->window_text, "%d tabs in current session\n", *tab_amount);
+				}
 			}
 
 			else if(strcmp(input_args[0], "/connect") == 0) {
