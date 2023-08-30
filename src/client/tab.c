@@ -112,7 +112,7 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 			} while(temp != NULL);
 
 			if(strcmp(input_args[0], "/help") == 0) {
-				tm_win_print(tab->window_text, "COMMANDS:\n\nconnect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\nexit - Exit kiwitalk\n");
+				tm_win_print(tab->window_text, "COMMANDS:\n\n/connect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\n/exit - Exit kiwitalk\n");
 			}
 
 			else if(strcmp(input_args[0], "/exit") == 0) {
