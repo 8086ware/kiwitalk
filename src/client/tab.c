@@ -116,8 +116,15 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 			}
 
 			else if(strcmp(input_args[0], "/exit") == 0) {
-				tm_win_free(tab->window);
+				for(int i = 0; i < *tab_amount; i++) {
+					tm_win_free((*tabs)[i]->window);
+					free((*tabs)[i]);
+				}
+
+				free((*tabs));
+
 				tm_exit();
+				exit(0);
 			}
 
 			else if(strcmp(input_args[0], "/tab") == 0) {
