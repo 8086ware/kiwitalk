@@ -210,8 +210,7 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 
 		if(receive_bytes > 0) {
 			tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTGREEN, 1);
-			tm_win_print(tab->window_text, receive_buffer);
-			tm_win_print(tab->window_text, "\n");
+			tm_win_print(tab->window_text, "%s\n", receive_buffer);
 			tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTGREEN, 0);
 		}
 	}
