@@ -29,18 +29,14 @@ int main(void) {
 			names = realloc(names, sizeof(char*) * sm_get_server_client_amount(server));
 
 			if(names == NULL) {
-				tm_print("Memory error");
-				tm_input_ch();
-				tm_exit();
+				fprintf(stderr, "Memory error");
 				return 2;
 			}
 
 			names[sm_get_server_client_amount(server) - 1] = malloc(256);
 
 			if(names[sm_get_server_client_amount(server) - 1] == NULL) {
-				tm_print("Memory error");
-				tm_input_ch();
-				tm_exit();
+				fprintf(stderr, "Memory error");
 				return 3;
 			}
 
