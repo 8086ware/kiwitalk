@@ -188,7 +188,16 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 
 		else if(tab->connected) {
 			if(*command != '\0') {
-				sm_send(sm_get_server_socket(tab->server), command, strlen(command) + 1, 0);
+				if(sm_send(sm_get_server_socket(tab->server), command, strlen(command) + 1, 0) == -1) {
+					tm_win_attrib(tab->window_text, TM_ATTRIB_FG_RED, 1);
+					tm_win_print(tab->window_text, "Failed to connect to server\n");
+					tm_win_attrib(tab->window_text, TM_ATTRIB_FG_RED, 0);
+
+					sm_server_free(tab->server);
+					tab->server = NULL;
+
+					tab->connected = 0;
+				}
 			}
 		}
 	}
