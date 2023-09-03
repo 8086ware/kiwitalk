@@ -164,8 +164,13 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 					tm_win_print(tab->window_text, "Attempting to connect...\n");
 					tm_win_update(tab->window);
 
-					tab->server = sm_server(input_args[1], KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP, SM_IPV4);
+					if(tab->server != NULL) {
+						sm_server_free(tab->server);
+						tab->server = NULL;
+					}
 
+					tab->server = sm_server(input_args[1], KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP, SM_IPV4);
+					
 					if(tab->server == NULL) {
 						tm_win_print(tab->window_text, "Couldn't connect to server %s\n", input_args[1]);
 					}
