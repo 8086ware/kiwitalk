@@ -42,15 +42,13 @@ int main(void) {
 
 			sm_receive(sm_get_client_socket(*sm_get_server_client(server, sm_get_server_client_amount(server) - 1)), names[sm_get_server_client_amount(server) - 1], 256, -1);
 
-			tm_attrib(TM_ATTRIB_FG_GREEN, 1);
-
 			char ip[128];
 			
 			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, 0, NI_NUMERICHOST);
 
-			tm_print("%s Joined the chat from %s\n", names[sm_get_server_client_amount(server) - 1], ip);
-
-			tm_attrib(TM_ATTRIB_FG_GREEN, 0);
+			char send_buf[4096];
+			int bytes_to_send = sprintf(send_buf, "%s Joined the chat from %s", names[sm_get_server_client_amount(server) - 1], ip);
+			broadcast_to_clients(server, send_buf, bytes_to_send);
 			tm_update();
 		}
 
