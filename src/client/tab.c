@@ -132,7 +132,7 @@ void process_tab_input(struct Tab*** tabs, int *tab_number, int* tab_amount, cha
 
 			else if(strcmp(input_args[0], "/tab") == 0) {
 				if(input_arg_amount < 2) {
-						tm_win_print(tab->window_text, "No subcommand given\n");
+					tm_win_print(tab->window_text, "No subcommand given\n");
 				}
 
 				else if(strcmp(input_args[1], "select") == 0) {
