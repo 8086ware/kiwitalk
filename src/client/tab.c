@@ -1,5 +1,8 @@
 #include "tab.h"
 #include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define KIWITALK_PORT "47831"
 
