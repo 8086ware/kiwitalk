@@ -1,6 +1,8 @@
 #ifndef TAB_H
 #define TAB_H
 
+#define KIWITALK_PORT "47831"
+
 #include <sockmanip.h>
 #include <termmanip.h>
 
