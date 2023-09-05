@@ -21,6 +21,8 @@ struct Tab {
 
 void new_tab(struct Tab*** tabs, int* amount);
 void get_tab_input(struct Tab*** tabs, int tab_number, char* command, int max_size);
-void process_tab_input(struct Tab*** tabs, int *tab_number, int *tab_amount, char* command, int max_size);
+void process_tab_input(struct Tab*** tabs, int *tab_number, int *tab_amount, char* input, int max_size);
+void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, char* command);
+void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amount);
 
 #endif
