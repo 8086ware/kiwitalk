@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "broadcast.h"
+#include "parse_command.h"
 
 #define KIWITALK_PORT "47831"
 
@@ -62,27 +63,8 @@ int main(void) {
 			receive_buf[bytes_received] = '\0';
 
 			if(bytes_received > 0) {
-				char** request_args = NULL;
 				int request_arg_amount = 0;
-
-				char* temp = NULL;
-
-				do {
-					if(request_arg_amount == 0) {
-						temp = strtok(receive_buf, "\177");
-					}
-
-					else {
-						temp = strtok(NULL, "\177");
-					}
-
-					if(temp != NULL) {
-						request_args = realloc(request_args, sizeof(char*) * (request_arg_amount + 1));
-						request_args[request_arg_amount] = temp;
-						request_arg_amount++;
-					}
-				} while(temp != NULL);
-
+				char** request_args = parse_command(receive_buf, &request_arg_amount, "\177");
 
 				if(strcmp(request_args[0], "MSG") == 0) {
 					bytes_to_send = sprintf(send_buf, "MSG\177%s\177%s\177", names[i], request_args[1]);

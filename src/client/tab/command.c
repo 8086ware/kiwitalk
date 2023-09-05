@@ -1,30 +1,13 @@
 #include <sockmanip.h>
 #include "tab.h"
 #include <termmanip.h>
+#include "parse_command.h"
 
 void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, char* command) {
 	struct Tab* tab = (*tabs)[*tab_number];
 
-	char** input_args = NULL;
 	int input_arg_amount = 0;
-
-	char* temp = NULL;
-
-	do {
-		if(input_arg_amount == 0) {
-			temp = strtok(command, " ");
-		}
-
-		else {
-			temp = strtok(NULL, " ");
-		}
-
-		if(temp != NULL) {
-			input_args = realloc(input_args, sizeof(char*) * (input_arg_amount + 1));
-			input_args[input_arg_amount] = temp;
-			input_arg_amount++;
-		}
-	} while(temp != NULL);
+	char** input_args = parse_command(command, &input_arg_amount, " ");
 
 	if(strcmp(input_args[0], "/help") == 0) {
 		tm_win_print(tab->window_text, "COMMANDS:\n\n/connect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\n/exit - Exit kiwitalk\n");

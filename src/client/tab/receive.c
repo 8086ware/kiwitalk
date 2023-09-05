@@ -2,6 +2,7 @@
 #include <termmanip.h>
 #include <sockmanip.h>
 #include <string.h>
+#include "parse_command.h"
 
 void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amount) {
 	struct Tab* tab = (*tabs)[*tab_selected];
@@ -13,27 +14,8 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 		receive_buffer[receive_bytes] = '\0';
 
 		if(receive_bytes > 0) {
-			char** request_args = NULL;
 			int request_arg_amount = 0;
-
-			char* temp = NULL;
-
-			do {
-				if(request_arg_amount == 0) {
-					temp = strtok(receive_buffer, "\177");
-				}
-
-				else {
-					temp = strtok(NULL, "\177");
-				}
-
-				if(temp != NULL) {
-					request_args = realloc(request_args, sizeof(char*) * (request_arg_amount + 1));
-					request_args[request_arg_amount] = temp;
-					request_arg_amount++;
-				}
-			} while(temp != NULL);
-
+			char** request_args = parse_command(receive_buffer, &request_arg_amount, "\177");
 
 			if(strcmp(request_args[0], "MSG") == 0) {
 				tm_win_attrib(tab->window_text, TM_ATTRIB_FG_CYAN, 1);
