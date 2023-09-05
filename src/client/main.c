@@ -22,7 +22,7 @@ int main(void) {
 
 		receive_tab_server_requests(&tabs, &tab_selected, &amount);
 
-		tm_win_update(tabs[tab_selected]->window);
+		tm_win_update(tabs[tab_selected]->window_text);
 	}
 
 	tm_exit();

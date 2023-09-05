@@ -32,7 +32,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 
 	else if(strcmp(input_args[0], "/exit") == 0) {
 		for(int i = 0; i < *tab_amount; i++) {
-			tm_win_free((*tabs)[i]->window);
+			tm_win_free((*tabs)[i]->window_text);
 			free((*tabs)[i]);
 		}
 
@@ -69,12 +69,11 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	else if(strcmp(input_args[0], "/connect") == 0) {
 		if(input_arg_amount < 3) {
 			tm_win_print(tab->window_text, "No username or IP entered\n");
-			tm_win_update(tab->window);
 		}
 
 		else {
 			tm_win_print(tab->window_text, "Attempting to connect...\n");
-			tm_win_update(tab->window);
+			tm_win_update(tab->window_text);
 
 			if(tab->server != NULL) {
 				sm_server_free(tab->server);
