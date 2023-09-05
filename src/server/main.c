@@ -23,9 +23,9 @@ int main(void) {
 	tm_update();
 
 	char** names = NULL;
-	
+
 	while(1) {
-		if(sm_new_client(server, 10)) {
+		if(sm_new_client(server, 0)) {
 			names = realloc(names, sizeof(char*) * sm_get_server_client_amount(server));
 
 			if(names == NULL) {
