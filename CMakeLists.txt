@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 project(kiwitalk)
 
-set(KIWITALK_CLIENT_SOURCE src/client/main.c src/client/tab.c)
+set(KIWITALK_CLIENT_SOURCE src/client/main.c src/client/tab/tab.c src/client/tab/process.c src/client/tab/command.c src/client/tab/getinput.c src/client/tab/receive.c)
 set(KIWITALK_SERVER_SOURCE src/server/main.c src/server/broadcast.c)
 
 add_executable(kiwitalk ${KIWITALK_CLIENT_SOURCE})
