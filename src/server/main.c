@@ -47,8 +47,8 @@ int main(void) {
 			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, 0, 0);
 
 			char send_buf[4096];
-			int bytes_to_send = sprintf(send_buf, "%s Joined the chat from %s", names[sm_get_server_client_amount(server) - 1], ip);
-			broadcast_to_clients(server, send_buf, bytes_to_send);
+			int bytes_to_send = sprintf(send_buf, "JOIN_%s_%s", names[sm_get_server_client_amount(server) - 1], ip);
+			broadcast_to_clients(server, &names, send_buf, bytes_to_send);
 			tm_update();
 		}
 
