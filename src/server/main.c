@@ -47,7 +47,7 @@ int main(void) {
 			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, 0, 0);
 
 			char send_buf[4096];
-			int bytes_to_send = sprintf(send_buf, "JOIN_%s_%s", names[sm_get_server_client_amount(server) - 1], ip);
+			int bytes_to_send = sprintf(send_buf, "JOIN\177%s\177%s\177", names[sm_get_server_client_amount(server) - 1], ip);
 			broadcast_to_clients(server, &names, send_buf, bytes_to_send);
 			tm_update();
 		}
@@ -69,17 +69,11 @@ int main(void) {
 
 				do {
 					if(request_arg_amount == 0) {
-						temp = strtok(receive_buf, "_");
+						temp = strtok(receive_buf, "\177");
 					}
 
 					else {
-						if(strcmp(request_args[0], "MSG") == 0 && request_arg_amount == 1) {
-							temp = strtok(NULL, "\177");
-						}
-
-						else {
-							temp = strtok(NULL, "_");
-						}
+						temp = strtok(NULL, "\177");
 					}
 
 					if(temp != NULL) {
@@ -91,7 +85,7 @@ int main(void) {
 
 
 				if(strcmp(request_args[0], "MSG") == 0) {
-					bytes_to_send = sprintf(send_buf, "MSG_%s_%s\177", names[i], request_args[1]);
+					bytes_to_send = sprintf(send_buf, "MSG\177%s\177%s\177", names[i], request_args[1]);
 				}
 
 				broadcast_to_clients(server, &names, send_buf, bytes_to_send);

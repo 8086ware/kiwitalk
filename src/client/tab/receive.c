@@ -20,17 +20,11 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 
 			do {
 				if(request_arg_amount == 0) {
-					temp = strtok(receive_buffer, "_");
+					temp = strtok(receive_buffer, "\177");
 				}
 
 				else {
-					if(strcmp(request_args[0], "MSG") == 0 && request_arg_amount == 2) {
-						temp = strtok(NULL, "\177");
-					}
-
-					else {
-						temp = strtok(NULL, "_");
-					}
+					temp = strtok(NULL, "\177");
 				}
 
 				if(temp != NULL) {
