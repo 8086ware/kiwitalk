@@ -59,6 +59,8 @@ int main(void) {
 			char receive_buf[4096];
 			int bytes_received = sm_receive(sm_get_client_socket(*sm_get_server_client(server, i)), receive_buf, 4096, 0);
 
+			receive_buf[bytes_received] = '\0';
+
 			if(bytes_received > 0) {
 				bytes_to_send = sprintf(send_buf, "<%s> %s", names[i], receive_buf);
 				broadcast_to_clients(server, send_buf, bytes_to_send);
