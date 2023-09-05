@@ -62,8 +62,41 @@ int main(void) {
 			receive_buf[bytes_received] = '\0';
 
 			if(bytes_received > 0) {
-				bytes_to_send = sprintf(send_buf, "<%s> %s", names[i], receive_buf);
-				broadcast_to_clients(server, send_buf, bytes_to_send);
+				char** request_args = NULL;
+				int request_arg_amount = 0;
+
+				char* temp = NULL;
+
+				do {
+					if(request_arg_amount == 0) {
+						temp = strtok(receive_buf, "_");
+					}
+
+					else {
+						if(strcmp(request_args[0], "MSG") == 0 && request_arg_amount == 1) {
+							temp = strtok(NULL, "\177");
+						}
+
+						else {
+							temp = strtok(NULL, "_");
+						}
+					}
+
+					if(temp != NULL) {
+						request_args = realloc(request_args, sizeof(char*) * (request_arg_amount + 1));
+						request_args[request_arg_amount] = temp;
+						request_arg_amount++;
+					}
+				} while(temp != NULL);
+
+
+				if(strcmp(request_args[0], "MSG") == 0) {
+					bytes_to_send = sprintf(send_buf, "MSG_%s_%s\177", names[i], request_args[1]);
+				}
+
+				broadcast_to_clients(server, &names, send_buf, bytes_to_send);
+				
+				free(request_args);
 			}
 		}
 	}
