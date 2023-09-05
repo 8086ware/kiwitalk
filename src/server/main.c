@@ -42,9 +42,9 @@ int main(void) {
 
 			sm_receive(sm_get_client_socket(*sm_get_server_client(server, sm_get_server_client_amount(server) - 1)), names[sm_get_server_client_amount(server) - 1], 256, -1);
 
-			char ip[128];
-			
-			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, 0, NI_NUMERICHOST);
+			char ip[256];
+
+			getnameinfo(&sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr, sm_get_server_client(server, sm_get_server_client_amount(server) - 1)->addr_len, ip, 128, NULL, 0, 0);
 
 			char send_buf[4096];
 			int bytes_to_send = sprintf(send_buf, "%s Joined the chat from %s", names[sm_get_server_client_amount(server) - 1], ip);
