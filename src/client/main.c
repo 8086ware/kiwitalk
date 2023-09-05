@@ -20,6 +20,8 @@ int main(void) {
 		get_tab_input(&tabs, tab_selected, command, 4096);
 		process_tab_input(&tabs, &tab_selected, &amount, command, 4096);
 
+		receive_tab_server_requests(&tabs, &tab_selected, &amount);
+
 		tm_win_update(tabs[tab_selected]->window);
 	}
 
