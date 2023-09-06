@@ -79,7 +79,15 @@ int main(void) {
 					}
 				}
 
-				broadcast_to_clients(server, &names, send_buf, bytes_to_send);
+				else if(strcmp(request_args[0], "LIST") == 0) {
+					bytes_to_send += sprintf(send_buf, "LIST\177");
+
+					for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+						bytes_to_send += sprintf(send_buf + bytes_to_send, "%s\177", names[i]);
+					}
+
+					send_to_client(server, i, &names, send_buf, bytes_to_send);
+				}
 				
 				free(request_args);
 			}

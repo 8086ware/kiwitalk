@@ -77,6 +77,10 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 		}
 	}
 
+	else if(strcmp(input_args[0], "/list") == 0) {
+		sm_send(sm_get_server_socket(tab->server), "LIST", 4, 0);
+	}
+
 	free(input_args);
 }
 
