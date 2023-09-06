@@ -49,7 +49,11 @@ int main(void) {
 
 			char send_buf[4096];
 			int bytes_to_send = sprintf(send_buf, "JOIN\177%s\177%s\177", names[sm_get_server_client_amount(server) - 1], ip);
-			broadcast_to_clients(server, &names, send_buf, bytes_to_send);
+
+			for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+				send_to_client(server, i, &names, send_buf, bytes_to_send);
+			}
+
 			tm_update();
 		}
 
@@ -68,6 +72,11 @@ int main(void) {
 
 				if(strcmp(request_args[0], "MSG") == 0) {
 					bytes_to_send = sprintf(send_buf, "MSG\177%s\177%s\177", names[i], request_args[1]);
+
+
+					for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+						send_to_client(server, i, &names, send_buf, bytes_to_send);
+					}
 				}
 
 				broadcast_to_clients(server, &names, send_buf, bytes_to_send);
