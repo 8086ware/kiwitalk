@@ -2,6 +2,6 @@
 #define BROADCAST_H
 #include <sockmanip.h>
 
-void broadcast_to_clients(Sm_server* s, char*** names, char* string, int bytes);
+void send_to_client(Sm_server* s, int client_id, char*** names, char* string, int bytes);
 
 #endif
