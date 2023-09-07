@@ -2,7 +2,6 @@
 #include <termmanip.h>
 #include <string.h>
 #include <stdio.h>
-#include "broadcast.h"
 #include "parse_command.h"
 
 #define KIWITALK_PORT "47831"
