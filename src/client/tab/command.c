@@ -9,6 +9,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	int input_arg_amount = 0;
 	char** input_args = parse_command(command, &input_arg_amount, " ");
 
+	tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTCYAN, 1);
 	if(strcmp(input_args[0], "/help") == 0) {
 		tm_win_print(tab->window_text, "COMMANDS:\n\n/connect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\n/exit - Exit kiwitalk\n");
 	}
@@ -82,5 +83,6 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	}
 
 	free(input_args);
+	tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTCYAN, 0);
 }
 
