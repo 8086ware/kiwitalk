@@ -2,11 +2,15 @@
 #include <termmanip.h>
 #include <string.h>
 #include "tab.h"
+#include <signal.h>
+
+void sigpipe_hndlr() {}
 
 int main(void) {
 	sm_win_init();
 	tm_init();
 
+	signal(SIGPIPE, sigpipe_hndlr);
 	struct Tab** tabs = NULL;
 	int amount = 0;
 

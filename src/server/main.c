@@ -3,10 +3,16 @@
 #include <string.h>
 #include <stdio.h>
 #include "parse_command.h"
+#include <signal.h>
+#include "send.h"
 
 #define KIWITALK_PORT "47831"
 
+void sigpipe_hndlr() {}
+
 int main(void) {
+	signal(SIGPIPE, sigpipe_hndlr);
+
 	tm_init();
 	tm_flags(TM_FLAG_SCROLL, 1);
 
