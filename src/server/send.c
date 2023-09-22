@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 void send_to_client(Sm_server* s, int client_id, char*** names, char* string, int bytes) {
-	string[bytes] = '\0';
 	tm_print("Sending to: %s | %s\n", (*names)[client_id], string);
 	tm_update();
 
