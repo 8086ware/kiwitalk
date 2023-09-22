@@ -31,7 +31,7 @@ void new_tab(struct Tab*** tabs, int* amount) {
 	tm_win_flags(((*tabs)[*amount])->window_text, TM_FLAG_SCROLL, 1);
 	tm_win_flags(((*tabs)[*amount])->window_text, TM_FLAG_ECHO, 0);
 
-	tm_win_input_timeout(((*tabs)[*amount])->window_input, 0); 
+	tm_win_input_timeout(((*tabs)[*amount])->window_input, 1); 
 
 	tm_win_parent(((*tabs)[*amount])->window_text, ((*tabs)[*amount])->window_input, TM_CHILD_NORMAL);
 
