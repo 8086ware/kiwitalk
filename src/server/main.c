@@ -31,7 +31,7 @@ int main(void) {
 	char** names = NULL;
 
 	while(1) {
-		if(sm_new_client(server, 0)) {
+		if(sm_new_client(server, 1)) {
 			names = realloc(names, sizeof(char*) * sm_get_server_client_amount(server));
 
 			if(names == NULL) {
