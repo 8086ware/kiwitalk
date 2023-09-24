@@ -27,7 +27,7 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 		}
 	}
 
-	else if(c != 0 && tab->input_amount < max_size) {
+	else if(c > 0 && c < 128 && tab->input_amount < max_size) {
 		tm_win_print(tab->window_input,"%c", c);
 		tm_win_update(tab->window_input);
 		command[tab->input_amount] = c;
