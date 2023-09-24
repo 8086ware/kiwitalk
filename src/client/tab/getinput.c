@@ -33,4 +33,18 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 		command[tab->input_amount] = c;
 		tab->input_amount++;
 	}
+
+	else if(c == TM_KEY_SCREEN_RESIZED) {
+		int scr_cols, scr_rows;
+		tm_get_scrsize(&scr_cols, &scr_rows);
+	
+		for(int i = 0; i < tab_amount; i++) { 
+			tm_win_modify((*tabs)[i]->window_text, 0, 0, scr_cols, scr_rows - 1);
+			tm_win_modify((*tabs)[i]->window_input, 0, scr_rows - 1, scr_cols, 1);
+			tm_win_print((*tabs)[i]->window_input, "> ");
+		}
+
+		tm_win_update(tab->window_text);
+		tm_win_update(tab->window_input);
+	}
 }
