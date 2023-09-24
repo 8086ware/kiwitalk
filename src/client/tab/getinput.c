@@ -2,7 +2,7 @@
 #include <sockmanip.h>
 #include <termmanip.h>
 
-void get_tab_input(struct Tab*** tabs, int tab_number, char* command, int max_size) {
+void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* command, int max_size) {
 	struct Tab* tab = (*tabs)[tab_number];
 
 	int c = tm_win_input_ch(tab->window_input);
