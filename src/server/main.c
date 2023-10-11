@@ -21,7 +21,7 @@ int main(void) {
 
 	if(server == NULL) {
 		tm_print("Couldn't host server on port %s. Is another program using the port?", KIWITALK_PORT);
-		tm_input_ch();
+		tm_input();
 		return 1;
 	}
 
