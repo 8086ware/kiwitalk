@@ -11,7 +11,9 @@
 void sigpipe_hndlr() {}
 
 int main(void) {
+#ifndef _WIN32
 	signal(SIGPIPE, sigpipe_hndlr);
+#endif
 
 	tm_init();
 	tm_flags(TM_FLAG_SCROLL, 1);

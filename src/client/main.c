@@ -10,7 +10,9 @@ int main(void) {
 	sm_win_init();
 	tm_init();
 
+#ifndef _WIN32
 	signal(SIGPIPE, sigpipe_hndlr);
+#endif
 	struct Tab** tabs = NULL;
 	int amount = 0;
 
