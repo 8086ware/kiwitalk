@@ -7,13 +7,13 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 
 	Tm_input c = tm_win_input(tab->window_input);
 
-	if((c.ctrl_down && (c.key == 'J')) || c.key == TM_KEY_LF) {
+	if(c.ctrl_character == TM_KEY_CR || c.ctrl_character == TM_KEY_LF) {
 		command[tab->input_amount] = '\0';
 		tab->finished_input = 1;
 		tab->input_amount = 0;
 	}
 
-	else if((c.ctrl_down && c.key == 'H') || c.key == TM_KEY_DEL) {
+	else if(c.key == TM_KEY_BS || c.key == TM_KEY_DEL) {
 		if(tab->input_amount > 0) {
 			tab->input_amount--;
 
