@@ -9,7 +9,8 @@ void sigpipe_hndlr() {}
 int main(void) {
 	sm_win_init();
 	tm_init();
-
+	
+	tm_set_title("kiwitalk");
 #ifndef _WIN32
 	signal(SIGPIPE, sigpipe_hndlr);
 #endif
