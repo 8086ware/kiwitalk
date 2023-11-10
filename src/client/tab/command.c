@@ -2,6 +2,7 @@
 #include "tab.h"
 #include <termmanip.h>
 #include "parse_command.h"
+#include <string.h>
 
 void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, char* command) {
 	struct Tab* tab = (*tabs)[*tab_number];
