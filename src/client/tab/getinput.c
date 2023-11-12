@@ -56,10 +56,22 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 			tm_get_scrsize(&scr_cols, &scr_rows);
 
 			for(int i = 0; i < tab_amount; i++) { 
-				tm_win_modify((*tabs)[i]->window_text, 0, 0, scr_cols, scr_rows);
-				tm_win_modify((*tabs)[i]->window_input, 0, scr_rows - 1, scr_cols, 1);
+				tm_win_modify((*tabs)[i]->window, 0, 0, scr_cols, scr_rows);
+				tm_win_border((*tabs)[i]->window);
+				tm_win_modify((*tabs)[i]->window_text, 1, 1, scr_cols - 2, scr_rows - 2);
+				tm_win_modify((*tabs)[i]->window_input, 1, scr_rows - 2, scr_cols - 2, 1);
 				tm_win_print((*tabs)[i]->window_input, "> ");
 			}
+
+			tm_win_update(tab->window);
+		}
+
+		else if(c.scroll_up) {
+			tm_win_scroll(tab->window_text, 2, TM_SCROLL_UP);
+		}
+
+		else if(c.scroll_down) {
+			tm_win_scroll(tab->window_text, 2, TM_SCROLL_DOWN);
 		}
 	}
 }
