@@ -9,6 +9,7 @@
 struct Tab {
 	Sm_server* server;
 
+	Tm_window* window;
 	Tm_window* window_text;
 	Tm_window* window_input;
 

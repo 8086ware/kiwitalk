@@ -27,15 +27,24 @@ void new_tab(struct Tab*** tabs, int* amount) {
 
 	tab->server = NULL;
 
-	tab->window_text = tm_window(0, 0, scr_cols, scr_rows);
-	tab->window_input = tm_window(0, tm_win_get_rows(tab->window_text) - 1, tm_win_get_columns(tab->window_text), 1);
+	tab->window = tm_window(0, 0, scr_cols, scr_rows);
+
+	tm_win_border(tab->window);
+
+	tab->window_text = tm_window(1, 1, scr_cols - 2, scr_rows - 2);
+	tab->window_input = tm_window(1, scr_rows - 2, scr_cols - 2, 1);
+
+	tm_win_input_timeout(tab->window_input, 1); 
+
+	tm_win_parent(tab->window, tab->window_text, TM_CHILD_NORMAL);
+	tm_win_parent(tab->window, tab->window_input, TM_CHILD_NORMAL);
 
 	tm_win_flags(tab->window_text, TM_FLAG_SCROLL, 1);
 	tm_win_flags(tab->window_text, TM_FLAG_ECHO, 0);
 
-	tm_win_input_timeout(tab->window_input, 1); 
-
-	tm_win_parent(tab->window_text, tab->window_input, TM_CHILD_NORMAL);
+	tm_win_flags(tab->window_input, TM_FLAG_MOUSE_INPUT, 1);
+	tm_win_flags(tab->window_input, TM_FLAG_ECHO, 0);
+	tm_win_flags(tab->window_input, TM_FLAG_SCROLL, 1);
 
 	tm_win_print(tab->window_text, "-- KIWITALK --\n\nWelcome. Type /help for list of commands.\n");
 
@@ -45,6 +54,6 @@ void new_tab(struct Tab*** tabs, int* amount) {
 
 	tm_win_print(tab->window_input, "> ");
 
-	tm_win_update(tab->window_text);
+	tm_win_update(tab->window);
 	(*amount)++;
 }
