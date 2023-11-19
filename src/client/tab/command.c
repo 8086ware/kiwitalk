@@ -61,18 +61,15 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 			tm_win_print(tab->window_text, "Attempting to connect...\n");
 			tm_win_update(tab->window_text);
 
-			if(tab->server != NULL) {
-				sm_server_free(tab->server);
-				tab->server = NULL;
-			}
+			Sm_server* temp = sm_server(input_args[1], KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP, SM_IPV4);
 
-			tab->server = sm_server(input_args[1], KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP, SM_IPV4);
-
-			if(tab->server == NULL) {
+			if(temp == NULL) {
 				tm_win_print(tab->window_text, "Couldn't connect to server %s\n", input_args[1]);
 			}
 
 			else {
+				free(tab->server);
+				tab->server = temp;
 				sm_send(sm_get_server_socket(tab->server), input_args[2], 256, -1);
 				tm_win_print(tab->window_text, "Successfully connected to server %s\n", input_args[1]);
 				tab->connected = 1;
