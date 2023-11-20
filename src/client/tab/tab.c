@@ -43,6 +43,7 @@ void new_tab(struct Tab*** tabs, int* amount) {
 	tm_win_flags(tab->window_text, TM_FLAG_ECHO, 0);
 
 	tm_win_flags(tab->window_input, TM_FLAG_MOUSE_INPUT, 1);
+	tm_win_flags(tab->window_input, TM_FLAG_TERMINAL_INPUT, 1);
 	tm_win_flags(tab->window_input, TM_FLAG_ECHO, 0);
 	tm_win_flags(tab->window_input, TM_FLAG_SCROLL, 1);
 
