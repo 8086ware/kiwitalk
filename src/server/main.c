@@ -99,6 +99,20 @@ int main(void) {
 					send_to_client(server, i, &names, send_buf, bytes_to_send);
 				}
 
+				else if(strcmp(request_args[0], "EXIT") == 0) {
+						bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
+
+						char* temp = names[sm_get_server_client_amount(server) - 1];
+						names[i] = temp;
+
+						names = realloc(names, (sm_get_server_client_amount(server) - 1) * sizeof(char*));
+						sm_client_free(server, i);
+
+						for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+							send_to_client(server, i, &names, send_buf, bytes_to_send);
+						}
+				}
+
 				free(request_args);
 			}
 
