@@ -1,12 +1,29 @@
 #include "tab.h"
 #include <sockmanip.h>
 #include <termmanip.h>
+#ifndef _WIN32
 #include <poll.h>
-#include <stdio.h>
+#endif
 
 void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* command, int max_size) {
 	struct Tab* tab = (*tabs)[tab_number];
 
+#ifdef _WIN32
+	int retwfmo = 0;
+	HANDLE handles[2];
+	handles[0] = GetStdHandle(STD_INPUT_HANDLE);
+
+	if(tab->server != NULL) {
+		WSAEVENT sock_event = WSACreateEvent();
+		WSAEventSelect(sm_get_server_socket(tab->server), sock_event, FD_READ);
+		handles[1] = sock_event;
+		retwfmo = WaitForMultipleObjects(2, handles, FALSE, INFINITE);
+	}
+
+	else {
+		retwfmo = WaitForMultipleObjects(1, handles, FALSE, INFINITE);
+	}
+#else
 	struct pollfd s_poll[2];
 	s_poll[0].events = POLLIN;
 	s_poll[0].fd = fileno(stdin);
@@ -14,15 +31,19 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 	s_poll[1].events = POLLIN;
 
 	if(tab->server != NULL) {
-		s_poll[1].fd = tab->server->socket;
+		s_poll[1].fd = sm_get_server_socket(tab->server);
 		poll(s_poll, 2, -1);
 	}
 
 	else {
 		poll(s_poll, 1, -1);
 	}
-
+#endif
+#ifdef _WIN32
+	if(retwfmo == WSA_WAIT_EVENT_0) {
+#else
 	if(s_poll[0].revents & POLLIN) {
+#endif
 		Tm_input c = tm_win_input(tab->window_input);
 
 		if(c.ctrl_character == TM_KEY_CR || c.ctrl_character == TM_KEY_LF) {
