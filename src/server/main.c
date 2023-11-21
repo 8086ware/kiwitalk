@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 #include "parse_command.h"
-#include <signal.h>
 #include "send.h"
+#include <time.h>
 
 #define KIWITALK_PORT "47831"
 
@@ -31,6 +31,9 @@ int main(void) {
 	tm_update();
 
 	char** names = NULL;
+
+	time_t elapsed = time(NULL);
+	time_t start = time(NULL);
 
 	while(1) {
 		if(sm_new_client(server, 1)) {
@@ -100,19 +103,26 @@ int main(void) {
 			}
 
 			else {
-				if(sm_send(sm_get_client_socket(*sm_get_server_client(server, i)), 0, 0, 0) == -1) {
-					char send_left_buf[4096];
-					int bytes_send_left = sprintf(send_left_buf, "LEFT\177%s", names[i]);
+				if(elapsed - start == 15) {
+					start = time(NULL);
+					elapsed = time(NULL);
 
-					char* temp = names[sm_get_server_client_amount(server) - 1];
-					names[i] = temp;
+					if(sm_send(sm_get_client_socket(*sm_get_server_client(server, i)), ".", 1, 0) == -1) {
+						char send_left_buf[4096];
+						int bytes_send_left = sprintf(send_left_buf, "LEFT\177%s", names[i]);
+						char* temp = names[sm_get_server_client_amount(server) - 1];
+						names[i] = temp;
+						names = realloc(names, (sm_get_server_client_amount(server) - 1) * sizeof(char*));
+						sm_client_free(server, i);
 
-					names = realloc(names, (sm_get_server_client_amount(server) - 1) * sizeof(char*));
-					sm_client_free(server, i);
-
-					for(int i = 0; i < sm_get_server_client_amount(server); i++) {
-						send_to_client(server, i, &names, send_left_buf, bytes_send_left);
+						for(int i = 0; i < sm_get_server_client_amount(server); i++) {
+							send_to_client(server, i, &names, send_left_buf, bytes_send_left);
+						}
 					}
+				}
+
+				else {
+					elapsed = time(NULL);
 				}
 			}
 		}
