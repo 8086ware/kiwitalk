@@ -40,7 +40,7 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 	}
 #endif
 #ifdef _WIN32
-	if(retwfmo == WSA_WAIT_EVENT_0) {
+	if(retwfmo == WAIT_OBJECT_0) {
 #else
 	if(s_poll[0].revents & POLLIN) {
 #endif
