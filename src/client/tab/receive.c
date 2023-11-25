@@ -10,7 +10,7 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 
 	if(tab->connected) {
 		char receive_buffer[4096];
-		int receive_bytes = sm_receive(sm_get_server_socket(tab->server), receive_buffer, 4096, 0);
+		int receive_bytes = recv(tab->server_socket, receive_buffer, 4096, 0);
 
 		receive_buffer[receive_bytes] = '\0';
 

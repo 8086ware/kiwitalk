@@ -13,9 +13,9 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 	HANDLE handles[2];
 	handles[0] = GetStdHandle(STD_INPUT_HANDLE);
 
-	if(tab->server != NULL) {
+	if(tab->connected) {
 		WSAEVENT sock_event = WSACreateEvent();
-		WSAEventSelect(sm_get_server_socket(tab->server), sock_event, FD_READ);
+		WSAEventSelect(tab->server_socket, sock_event, FD_READ);
 		handles[1] = sock_event;
 		retwfmo = WaitForMultipleObjects(2, handles, FALSE, INFINITE);
 	}
@@ -30,8 +30,8 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 
 	s_poll[1].events = POLLIN;
 
-	if(tab->server != NULL) {
-		s_poll[1].fd = sm_get_server_socket(tab->server);
+	if(tab->connected) {
+		s_poll[1].fd = tab->server_socket;
 		poll(s_poll, 2, -1);
 	}
 

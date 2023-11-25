@@ -2,18 +2,23 @@
 #include <termmanip.h>
 #include <string.h>
 #include "tab.h"
-#include <signal.h>
 
+#ifndef _WIN32
+#include <signal.h>
 void sigpipe_hndlr() {}
+#endif
 
 int main(void) {
-	sm_win_init();
+#ifdef _WIN32
+	WSADATA d;
+	WSAStartup(MAKEWORD(2, 2), &d);
+#else
+	signal(SIGPIPE, sigpipe_hndlr);
+#endif
 	tm_init();
 	
 	tm_set_title("kiwitalk");
-#ifndef _WIN32
-	signal(SIGPIPE, sigpipe_hndlr);
-#endif
+
 	struct Tab** tabs = NULL;
 	int amount = 0;
 

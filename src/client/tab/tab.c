@@ -25,7 +25,7 @@ void new_tab(struct Tab*** tabs, int* amount) {
 
 	struct Tab* tab = (*tabs)[*amount];
 
-	tab->server = NULL;
+	tab->server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 	tab->window = tm_window(0, 0, scr_cols, scr_rows);
 

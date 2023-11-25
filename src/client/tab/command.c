@@ -1,4 +1,3 @@
-#include <sockmanip.h>
 #include "tab.h"
 #include <termmanip.h>
 #include "parse_command.h"
@@ -17,9 +16,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	}
 
 	else if(strcmp(input_args[0], "/exit") == 0) {
-		if(tab->server != NULL) {
-			sm_send(sm_get_server_socket(tab->server), "EXIT\177", 5, 0);
-		}
+		send(tab->server_socket, "EXIT\177", 5, 0);
 
 		for(int i = 0; i < *tab_amount; i++) {
 			tm_win_free((*tabs)[i]->window_text);
@@ -65,25 +62,54 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 			tm_win_print(tab->window_text, "Attempting to connect...\n");
 			tm_win_update(tab->window_text);
 
-			Sm_server* temp = sm_server(input_args[1], KIWITALK_PORT, SM_SERVER_CONNECT, SM_TCP, SM_IPV4);
+			struct addrinfo hints;
+			memset(&hints, 0, sizeof(hints));
 
-			if(temp == NULL) {
-				tm_win_print(tab->window_text, "Couldn't connect to server %s\n", input_args[1]);
+			struct addrinfo* servinfo = NULL;
+
+			hints.ai_family = AF_INET;
+			hints.ai_socktype = SOCK_STREAM;
+
+			int gairesult = getaddrinfo(input_args[1], KIWITALK_PORT, &hints, &servinfo);
+
+			if(gairesult == -1 || servinfo == NULL) {
+				tm_win_print(tab->window_text, "Server doesn't exist %s\n", input_args[1]);
 			}
 
 			else {
-				free(tab->server);
-				tab->server = temp;
-				sm_send(sm_get_server_socket(tab->server), input_args[2], 256, -1);
-				tm_win_print(tab->window_text, "Successfully connected to server %s\n", input_args[1]);
-				tab->connected = 1;
+				int temp_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+
+				if(connect(temp_socket, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
+					tm_win_print(tab->window_text, "Couldn't connect to server %s\n", input_args[1]);
+				}
+
+				else {
+#ifdef _WIN32
+					closesocket(tab->server_socket);
+#else
+					close(tab->server_socket);
+#endif
+					tab->server_socket = temp_socket;
+#ifdef _WIN32
+					unsigned long mode = 1;
+					ioctlsocket(tab->server_socket, FIONBIO, &mode);
+#else
+					int flags = fcntl(tab->server_socket, F_GETFL);
+					fcntl(tab->server_socket, F_SETFL, flags | O_NONBLOCK);
+#endif
+					send(tab->server_socket, input_args[2], 256, 0);
+					tm_win_print(tab->window_text, "Successfully connected to server %s\n", input_args[1]);
+					tab->connected = 1;
+				}
+
+				FreeAddrInfo(servinfo);
 			}
 		}
 	}
 
 	else if(strcmp(input_args[0], "/list") == 0) {
 		if(tab->connected) {
-			sm_send(sm_get_server_socket(tab->server), "LIST", 4, 0);
+			send(tab->server_socket, "LIST", 4, 0);
 		}
 	}
 
