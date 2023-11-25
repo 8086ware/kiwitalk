@@ -3,11 +3,10 @@
 
 #define KIWITALK_PORT "47831"
 
-#include <sockmanip.h>
 #include <termmanip.h>
 
 struct Tab {
-	Sm_server* server;
+	int server_socket;
 
 	Tm_window* window;
 	Tm_window* window_text;
