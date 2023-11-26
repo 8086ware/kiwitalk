@@ -4,6 +4,7 @@
 #ifndef _WIN32
 #include <poll.h>
 #endif
+#include <stdio.h>
 
 void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* command, int max_size) {
 	struct Tab* tab = (*tabs)[tab_number];

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "parse_command.h"
 #include <time.h>
+#include <stdlib.h>
+#include <poll.h>
 
 #define KIWITALK_PORT "47831"
 
@@ -10,6 +12,12 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <signal.h>
+#include <fcntl.h>
 void sigpipe_hndlr() {}
 #endif
 
@@ -52,7 +60,7 @@ int main(void) {
 	unsigned long mode = 1;
 	ioctlsocket(server_socket, FIONBIO, &mode);
 #else
-	int flags = fcntl(tab->server_socket, F_GETFL);
+	int flags = fcntl(server_socket, F_GETFL);
 	fcntl(server_socket, F_SETFL, flags | O_NONBLOCK);
 #endif
 	tm_print("Listening on port %s\n", KIWITALK_PORT);
@@ -76,7 +84,11 @@ int main(void) {
 	s_poll[0].events = POLLIN;
 
 	while(1) {
+#ifdef _WIN32
 		WSAPoll(s_poll, poll_amount, -1);
+#else
+		poll(s_poll, poll_amount, -1);
+#endif
 
 		if(s_poll[0].revents & POLLIN) {
 			names = realloc(names, sizeof(char*) * (poll_amount + 1));

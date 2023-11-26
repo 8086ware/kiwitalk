@@ -2,6 +2,10 @@
 #include <termmanip.h>
 #include "parse_command.h"
 #include <string.h>
+#ifndef _WIN32
+#include <fcntl.h>
+#endif
+#include <stdlib.h>
 
 void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, char* command) {
 	struct Tab* tab = (*tabs)[*tab_number];
@@ -102,7 +106,11 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 					tab->connected = 1;
 				}
 
+#ifdef _WIN32
 				FreeAddrInfo(servinfo);
+#else
+				freeaddrinfo(servinfo);
+#endif
 			}
 		}
 	}
