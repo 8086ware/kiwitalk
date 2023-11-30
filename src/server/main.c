@@ -4,7 +4,6 @@
 #include "parse_command.h"
 #include <time.h>
 #include <stdlib.h>
-#include <poll.h>
 
 #define KIWITALK_PORT "47831"
 
@@ -12,6 +11,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else
+#include <poll.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
@@ -182,6 +182,8 @@ int main(void) {
 						s_poll[i] = temp2;
 						s_poll = realloc(s_poll, (poll_amount - 1) * sizeof(struct pollfd));
 
+						poll_amount--;
+
 						for(int i = 1; i < poll_amount; i++) {
 							send(s_poll[i].fd, send_buf, bytes_to_send, 0);
 						}
@@ -217,6 +219,8 @@ int main(void) {
 								fprintf(stderr, "Memory error");
 								return 6;
 							}
+
+							poll_amount--;
 
 							for(int i = 1; i < poll_amount; i++) {
 								send(s_poll[i].fd, send_buf, bytes_to_send, 0);
