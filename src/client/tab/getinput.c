@@ -67,7 +67,7 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 			}
 		}
 
-		else if(c.key > 0 && c.key < 128 && tab->input_amount < max_size) {
+		else if(c.key >= 32 && c.key <= 127 && tab->input_amount < max_size) {
 			tm_win_print(tab->window_input, "%c", c.key);
 			command[tab->input_amount] = c.key;
 			tab->input_amount++;
@@ -84,8 +84,6 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 				tm_win_modify((*tabs)[i]->window_input, 1, scr_rows - 2, scr_cols - 2, 1);
 				tm_win_print((*tabs)[i]->window_input, "> ");
 			}
-
-			tm_win_update(tab->window);
 		}
 
 		else if(c.scroll_up) {
