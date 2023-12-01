@@ -84,6 +84,7 @@ int main(void) {
 	s_poll[0].events = POLLIN;
 
 	while(1) {
+		tm_update();
 #ifdef _WIN32
 		WSAPoll(s_poll, poll_amount, -1);
 #else
@@ -156,7 +157,7 @@ int main(void) {
 
 					if(strcmp(request_args[0], "MSG") == 0) {
 						bytes_to_send = sprintf(send_buf, "MSG\177%s\177%s\177", names[i], request_args[1]);
-
+						tm_print("Sending out MSG %s %s\n", names[i], request_args[1]);
 
 						for(int i = 1; i < poll_amount; i++) {
 							send(s_poll[i].fd, send_buf, bytes_to_send, 0);
@@ -165,6 +166,8 @@ int main(void) {
 
 					else if(strcmp(request_args[0], "LIST") == 0) {
 						bytes_to_send += sprintf(send_buf, "LIST\177");
+
+						tm_print("Sending out LIST %s\n", names[i]);
 
 						for(int i = 1; i < poll_amount; i++) {
 							bytes_to_send += sprintf(send_buf + bytes_to_send, "%s\177", names[i]);
@@ -175,6 +178,8 @@ int main(void) {
 
 					else if(strcmp(request_args[0], "EXIT") == 0) {
 						bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
+
+						tm_print("Sending out EXIT %s\n", names[i]);
 
 						char* temp = names[poll_amount - 1];
 						names[i] = temp;
@@ -195,7 +200,6 @@ int main(void) {
 				}
 
 				else {
-
 					if(elapsed - start == 15) {
 						start = time(NULL);
 						elapsed = time(NULL);
