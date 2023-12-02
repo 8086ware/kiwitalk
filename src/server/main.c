@@ -199,46 +199,39 @@ int main(void) {
 					free(request_args);
 				}
 
-				else {
-					if(elapsed - start == 15) {
-						start = time(NULL);
-						elapsed = time(NULL);
+			}
 
-						if(send(s_poll[i].fd, ".", 1, 0) == -1) {
-							char send_left_buf[4096];
-							int bytes_send_left = sprintf(send_left_buf, "LEFT\177%s", names[i]);
+			else {
+				if(send(s_poll[i].fd, ".", 1, 0) == -1) {
+					char send_left_buf[4096];
+					int bytes_send_left = sprintf(send_left_buf, "LEFT\177%s", names[i]);
 
-							char* temp = names[poll_amount - 1];
-							names[i] = temp;
-							names = realloc(names, (poll_amount - 1) * sizeof(char*));
+					char* temp = names[poll_amount - 1];
+					names[i] = temp;
+					names = realloc(names, (poll_amount - 1) * sizeof(char*));
 
-							if(names == NULL) {
-								fprintf(stderr, "Memory error");
-								return 5;
-							}
-
-							struct pollfd temp2 = s_poll[poll_amount - 1];
-							s_poll[i] = temp2;
-							s_poll = realloc(s_poll, (poll_amount - 1) * sizeof(struct pollfd));
-
-							if(s_poll == NULL) {
-								fprintf(stderr, "Memory error");
-								return 6;
-							}
-
-							poll_amount--;
-
-							for(int i = 1; i < poll_amount; i++) {
-								send(s_poll[i].fd, send_buf, bytes_to_send, 0);
-							}
-						}
+					if(names == NULL) {
+						fprintf(stderr, "Memory error");
+						return 5;
 					}
 
-					else {
-						elapsed = time(NULL);
+					struct pollfd temp2 = s_poll[poll_amount - 1];
+					s_poll[i] = temp2;
+					s_poll = realloc(s_poll, (poll_amount - 1) * sizeof(struct pollfd));
+
+					if(s_poll == NULL) {
+						fprintf(stderr, "Memory error");
+						return 6;
+					}
+
+					poll_amount--;
+
+					for(int k = 1; k < poll_amount; k++) {
+						send(s_poll[k].fd, send_buf, bytes_to_send, 0);
 					}
 				}
 			}
 		}
 	}
 }
+
