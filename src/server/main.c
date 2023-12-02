@@ -179,7 +179,7 @@ int main(void) {
 					else if(strcmp(request_args[0], "EXIT") == 0) {
 						bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
 
-						tm_print("Sending out EXIT %s\n", names[i]);
+						tm_print("Sending out LEFT %s\n", names[i]);
 
 						char* temp = names[poll_amount - 1];
 						names[i] = temp;
@@ -203,8 +203,9 @@ int main(void) {
 
 			else {
 				if(send(s_poll[i].fd, ".", 1, 0) == -1) {
-					char send_left_buf[4096];
-					int bytes_send_left = sprintf(send_left_buf, "LEFT\177%s", names[i]);
+					bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
+
+					tm_print("Sending out LEFT %s\n", names[i]);
 
 					char* temp = names[poll_amount - 1];
 					names[i] = temp;
