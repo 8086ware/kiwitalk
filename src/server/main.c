@@ -132,7 +132,7 @@ int main(void) {
 			char send_buf[4096];
 			int bytes_to_send = sprintf(send_buf, "JOIN\177%s\177", names[poll_amount - 1]);
 
-			tm_print("%s Joined server from %s", names[poll_amount - 1], ip);
+			tm_print("%s Joined server from %s\n", names[poll_amount - 1], ip);
 
 			for(int i = 1; i < poll_amount; i++) {
 				send(s_poll[i].fd, send_buf, bytes_to_send, 0);
