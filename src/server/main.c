@@ -176,26 +176,6 @@ int main(void) {
 						send(s_poll[i].fd, send_buf, bytes_to_send, 0);
 					}
 
-					else if(strcmp(request_args[0], "EXIT") == 0) {
-						bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
-
-						tm_print("Sending out LEFT %s\n", names[i]);
-
-						char* temp = names[poll_amount - 1];
-						names[i] = temp;
-						names = realloc(names, (poll_amount - 1) * sizeof(char*));
-
-						struct pollfd temp2 = s_poll[poll_amount - 1];
-						s_poll[i] = temp2;
-						s_poll = realloc(s_poll, (poll_amount - 1) * sizeof(struct pollfd));
-
-						poll_amount--;
-
-						for(int i = 1; i < poll_amount; i++) {
-							send(s_poll[i].fd, send_buf, bytes_to_send, 0);
-						}
-					}
-
 					free(request_args);
 				}
 
