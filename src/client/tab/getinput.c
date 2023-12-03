@@ -1,5 +1,4 @@
 #include "tab.h"
-#include <sockmanip.h>
 #include <termmanip.h>
 #ifndef _WIN32
 #include <poll.h>

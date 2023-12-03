@@ -1,6 +1,5 @@
 #include "tab.h"
 #include <termmanip.h>
-#include <sockmanip.h>
 #include <string.h>
 #include "parse_command.h"
 #include <time.h>

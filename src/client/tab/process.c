@@ -1,4 +1,3 @@
-#include <sockmanip.h>
 #include "tab.h"
 #include <termmanip.h>
 #include <stdio.h>
