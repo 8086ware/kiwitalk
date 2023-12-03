@@ -68,9 +68,6 @@ int main(void) {
 
 	char** names = NULL;
 
-	time_t elapsed = time(NULL);
-	time_t start = time(NULL);
-
 	int poll_amount = 1;
 
 	struct pollfd* s_poll = malloc(sizeof(struct pollfd));
