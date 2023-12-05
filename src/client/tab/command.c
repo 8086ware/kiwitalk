@@ -16,7 +16,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTCYAN, 1);
 
 	if(strcmp(input_args[0], "/help") == 0) {
-		tm_win_print(tab->window_text, "COMMANDS:\n\n\t/connect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\n\t/exit - Exit kiwitalk\n\t/list - List users in server\n");
+		tm_win_print(tab->window_text, "COMMANDS:\n\n\t/connect [HOSTNAME] [USERNAME] - Will ask for a server hostname to connect to\n\t/exit - Exit kiwitalk\n\t/list - List users in server\n\t/clear - Clears screen\n");
 	}
 
 	else if(strcmp(input_args[0], "/exit") == 0) {
@@ -117,6 +117,10 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 		if(tab->connected) {
 			send(tab->server_socket, "LIST", 4, 0);
 		}
+	}
+	
+	else if(strcmp(input_args[0], "/clear") == 0) {
+			tm_win_clear(tab->window_text);
 	}
 
 	free(input_args);
