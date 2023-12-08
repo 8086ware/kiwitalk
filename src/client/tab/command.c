@@ -21,7 +21,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 
 	else if(strcmp(input_args[0], "/exit") == 0) {
 		for(int i = 0; i < *tab_amount; i++) {
-			tm_win_free((*tabs)[i]->window_text);
+			tm_win_free((*tabs)[i]->window);
 			free((*tabs)[i]);
 		}
 
