@@ -176,10 +176,7 @@ int main(void) {
 					free(request_args);
 				}
 
-			}
-
-			else {
-				if(send(s_poll[i].fd, ".", 1, 0) == -1) {
+				if(bytes_received <= 0) {
 					bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
 
 					tm_print("Sending out LEFT %s\n", names[i]);
