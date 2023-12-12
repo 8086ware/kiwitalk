@@ -173,6 +173,11 @@ int main(void) {
 				}
 
 				if(bytes_received <= 0) {
+#ifdef _WIN32
+					closesocket(s_poll[i].fd);
+#else
+					close(s_poll[i].fd);	
+#endif
 					bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
 
 					tm_print("Sending out LEFT %s\n", names[i]);
