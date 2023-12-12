@@ -75,6 +75,9 @@ int main(void) {
 
 	while(1) {
 		tm_update();
+		for(int i = 0; i < poll_amount; i++) {
+			s_poll[i].revents = 0;
+		}
 #ifdef _WIN32
 		WSAPoll(s_poll, poll_amount, -1);
 #else
