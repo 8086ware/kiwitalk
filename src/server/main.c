@@ -56,13 +56,6 @@ int main(void) {
 		return 1;
 	}
 
-#ifdef _WIN32
-	unsigned long mode = 1;
-	ioctlsocket(server_socket, FIONBIO, &mode);
-#else
-	int flags = fcntl(server_socket, F_GETFL);
-	fcntl(server_socket, F_SETFL, flags | O_NONBLOCK);
-#endif
 	tm_print("Listening on port %s\n", KIWITALK_PORT);
 	tm_update();
 
