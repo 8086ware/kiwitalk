@@ -100,13 +100,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 					close(tab->server_socket);
 #endif
 					tab->server_socket = temp_socket;
-#ifdef _WIN32
-					unsigned long mode = 1;
-					ioctlsocket(tab->server_socket, FIONBIO, &mode);
-#else
-					int flags = fcntl(tab->server_socket, F_GETFL);
-					fcntl(tab->server_socket, F_SETFL, flags | O_NONBLOCK);
-#endif
+
 					send(tab->server_socket, input_args[2], 256, 0);
 					tm_win_print(tab->window_text, "Successfully connected to server %s\n", input_args[1]);
 					tab->connected = 1;
