@@ -139,7 +139,7 @@ int main(void) {
 
 		for(int i = 1; i < poll_amount; i++) {
 			char receive_buf[4096];
-			if(s_poll[i].revents & POLLIN) {
+			if(s_poll[i].revents & POLLIN || s_poll[i].revents == 3) {
 				int bytes_received = recv(s_poll[i].fd, receive_buf, 4096, 0);
 
 				receive_buf[bytes_received] = '\0';
