@@ -15,7 +15,7 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 
 		if(receive_bytes > 0) {
 			int request_arg_amount = 0;
-			char** request_args = parse_command(receive_buffer, &request_arg_amount, "\177");
+			char** request_args = parse_command(receive_buffer, &request_arg_amount, "\x1d");
 
 			time_t e_time;
 			time(&e_time);

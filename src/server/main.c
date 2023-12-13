@@ -123,7 +123,7 @@ int main(void) {
 			getnameinfo(&client_addr, client_len, ip, 128, NULL, 0, 0);
 
 			char send_buf[4096];
-			int bytes_to_send = sprintf(send_buf, "JOIN\177%s\177", names[poll_amount - 1]);
+			int bytes_to_send = sprintf(send_buf, "JOIN\x1d%s\x1d", names[poll_amount - 1]);
 
 			tm_print("%s Joined server from %s\n", names[poll_amount - 1], ip);
 
@@ -149,7 +149,7 @@ int main(void) {
 					char** request_args = parse_command(receive_buf, &request_arg_amount, "\177");
 
 					if(strcmp(request_args[0], "MSG") == 0) {
-						bytes_to_send = sprintf(send_buf, "MSG\177%s\177%s\177", names[i], request_args[1]);
+						bytes_to_send = sprintf(send_buf, "MSG\x1d%s\x1d%s\x1d", names[i], request_args[1]);
 						tm_print("Sending out MSG %s %s\n", names[i], request_args[1]);
 
 						for(int i = 1; i < poll_amount; i++) {
@@ -158,12 +158,12 @@ int main(void) {
 					}
 
 					else if(strcmp(request_args[0], "LIST") == 0) {
-						bytes_to_send += sprintf(send_buf, "LIST\177");
+						bytes_to_send += sprintf(send_buf, "LIST\x1d");
 
 						tm_print("Sending out LIST %s\n", names[i]);
 
 						for(int i = 1; i < poll_amount; i++) {
-							bytes_to_send += sprintf(send_buf + bytes_to_send, "%s\177", names[i]);
+							bytes_to_send += sprintf(send_buf + bytes_to_send, "%s\x1d", names[i]);
 						}
 
 						send(s_poll[i].fd, send_buf, bytes_to_send, 0);
