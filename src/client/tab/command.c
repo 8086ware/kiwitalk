@@ -44,7 +44,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 			else {
 				int new_tab_number = atoi(input_args[2]);
 
-				if(new_tab_number > tab_amount - 1) {
+				if(new_tab_number > *tab_amount - 1) {
 					tm_win_print(tab->window_text, "Invalid tab number");
 				}
 
