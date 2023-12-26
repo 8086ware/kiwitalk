@@ -11,10 +11,16 @@ add_executable(kiwitalk_server ${KIWITALK_SERVER_SOURCE})
 target_include_directories(kiwitalk PRIVATE include)
 target_include_directories(kiwitalk_server PRIVATE include)
 
-target_link_libraries(kiwitalk PRIVATE termmanip)
-target_link_libraries(kiwitalk_server PRIVATE termmanip)
-
 if(WIN32) 
 	target_link_libraries(kiwitalk PRIVATE ws2_32)
 	target_link_libraries(kiwitalk_server PRIVATE ws2_32)
+
+	target_link_directories(kiwitalk PUBLIC "C:/Program Files (x86)/termmanip/lib")
+	target_include_directories(kiwitalk PUBLIC "C:/Program Files (x86)/termmanip/include")
+
+	target_link_directories(kiwitalk_server PUBLIC "C:/Program Files (x86)/termmanip/lib")
+	target_include_directories(kiwitalk_server PUBLIC "C:/Program Files (x86)/termmanip/include")
 endif()
+
+target_link_libraries(kiwitalk PRIVATE termmanip)
+target_link_libraries(kiwitalk_server PRIVATE termmanip)
