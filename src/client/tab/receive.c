@@ -50,6 +50,11 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 				tm_win_attrib(tab->window_text, TM_ATTRIB_FG_RED, 0);
 			}
 
+			if(strcmp(request_args[0], "TITLE") == 0) {
+				tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTYELLOW, 1);
+				tm_win_print(tab->window_text, "%s\n", request_args[1]);
+				tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTYELLOW, 0);
+			}
 			free(request_args);
 		}
 	}
