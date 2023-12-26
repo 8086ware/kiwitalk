@@ -120,6 +120,12 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 			send(tab->server_socket, "LIST", 4, 0);
 		}
 	}
+
+	else if(strcmp(input_args[0], "/title") == 0) {
+		if(tab->connected) {
+			send(tab->server_socket, "TITLE", 5, 0);
+		}
+	}
 	
 	else if(strcmp(input_args[0], "/clear") == 0) {
 			tm_win_clear(tab->window_text);
