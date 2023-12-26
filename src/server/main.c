@@ -1,3 +1,8 @@
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#endif
+
 #include <termmanip.h>
 #include <string.h>
 #include <stdio.h>
@@ -7,10 +12,7 @@
 
 #define KIWITALK_PORT "47831"
 
-#ifdef _WIN32
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#else
+#ifndef _WIN32
 #include <poll.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -21,7 +23,10 @@
 void sigpipe_hndlr() {}
 #endif
 
+#include "config.h"
+
 int main(void) {
+	struct Server_config sc = open_config();
 #ifdef _WIN32
 	WSADATA d;
 
@@ -56,7 +61,7 @@ int main(void) {
 		return 1;
 	}
 
-	tm_print("Listening on port %s\n", KIWITALK_PORT);
+	tm_print("Listening on port %s\nTitle: %s\n", KIWITALK_PORT, sc.server_title);
 	tm_update();
 
 	char** names = NULL;
@@ -165,6 +170,14 @@ int main(void) {
 						for(int i = 1; i < poll_amount; i++) {
 							bytes_to_send += sprintf(send_buf + bytes_to_send, "%s\x1d", names[i]);
 						}
+
+						send(s_poll[i].fd, send_buf, bytes_to_send, 0);
+					}
+
+					else if(strcmp(request_args[0], "TITLE") == 0) {
+						bytes_to_send += sprintf(send_buf, "TITLE\x1d%s\x1d", sc.server_title);
+
+						tm_print("Sending out TITLE %s\n", names[i]);
 
 						send(s_poll[i].fd, send_buf, bytes_to_send, 0);
 					}
