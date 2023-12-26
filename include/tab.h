@@ -3,7 +3,6 @@
 
 #define KIWITALK_PORT "47831"
 
-#include <termmanip.h>
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -13,6 +12,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #endif
+
+#include <termmanip.h>
 
 struct Tab {
 	int server_socket;
