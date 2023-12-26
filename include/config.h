@@ -1,8 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-struct {
+struct Server_config {
 	char* server_title;
-} Server_config;
+};
+
+struct Server_config open_config();
 
 #endif
