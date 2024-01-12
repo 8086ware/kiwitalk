@@ -44,7 +44,7 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 				if(strcmp(request_args[0], "JOIN") == 0) {
 					tm_win_attrib(tab->window_text, TM_ATTRIB_FG_GREEN, 1);
 					tm_win_print(tab->window_text, "[%d:%d:%d] ", time->tm_hour, time->tm_min, time->tm_sec);
-					tm_win_print(tab->window_text, "-> %s joined\n", request_args[1], request_args[2]);
+					tm_win_print(tab->window_text, "-> %s joined\n", request_args[1]);
 					tm_win_attrib(tab->window_text, TM_ATTRIB_FG_GREEN, 0);
 				}
 
