@@ -24,3 +24,10 @@ endif()
 
 target_link_libraries(kiwitalk PRIVATE termmanip)
 target_link_libraries(kiwitalk_server PRIVATE termmanip)
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_compile_options(kiwitalk PRIVATE -Wall -fsanitize=address)
+	target_link_options(kiwitalk PRIVATE -Wall -fsanitize=address)
+	target_compile_options(kiwitalk_server PRIVATE -fsanitize=address)
+	target_link_options(kiwitalk_server PRIVATE -Wall -fsanitize=address)
+endif()
