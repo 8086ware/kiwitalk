@@ -72,3 +72,4 @@ void receive_tab_server_requests(struct Tab*** tabs, int* tab_selected, int* amo
 			}
 		}
 	}
+}
