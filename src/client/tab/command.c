@@ -132,6 +132,6 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	}
 
 	free(input_args);
-	tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTCYAN, 0);
+	tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTBLUE, 0);
 }
 
