@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void new_tab(struct Tab*** tabs, int* amount) {
+void new_tab(Tm_terminal* terminal, struct Tab*** tabs, int* amount) {
 	*tabs = realloc(*tabs, sizeof(struct Tab*) * (*amount + 1));
 
 	if(*tabs == NULL) {
@@ -27,12 +27,12 @@ void new_tab(struct Tab*** tabs, int* amount) {
 
 	tab->server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-	tab->window = tm_window(0, 0, scr_cols, scr_rows);
+	tab->window = tm_window(terminal, 0, 0, scr_cols, scr_rows);
 
 	tm_win_border(tab->window);
 
-	tab->window_text = tm_window(1, 1, scr_cols - 2, scr_rows - 2);
-	tab->window_input = tm_window(1, scr_rows - 2, scr_cols - 2, 1);
+	tab->window_text = tm_window(terminal, 1, 1, scr_cols - 2, scr_rows - 2);
+	tab->window_input = tm_window(terminal, 1, scr_rows - 2, scr_cols - 2, 1);
 
 	tm_win_input_timeout(tab->window_input, 1); 
 

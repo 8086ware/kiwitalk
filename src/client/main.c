@@ -13,14 +13,14 @@ int main(void) {
 #else
 	signal(SIGPIPE, sigpipe_hndlr);
 #endif
-	tm_init();
-	
 	tm_set_title("kiwitalk");
+
+	Tm_terminal* terminal = tm_terminal();
 
 	struct Tab** tabs = NULL;
 	int amount = 0;
 
-	new_tab(&tabs, &amount);
+	new_tab(terminal, &tabs, &amount);
 
 	int tab_selected = 0;
 
@@ -35,6 +35,4 @@ int main(void) {
 			receive_tab_server_requests(&tabs, &i, &amount);
 		}
 	}
-
-	tm_exit();
 }

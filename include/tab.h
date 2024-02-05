@@ -29,7 +29,7 @@ struct Tab {
 	_Bool connected;
 }; 
 
-void new_tab(struct Tab*** tabs, int* amount);
+void new_tab(Tm_terminal* terminal, struct Tab*** tabs, int* amount);
 void get_tab_input(struct Tab*** tabs, int tab_number, int amount, char* command, int max_size);
 void process_tab_input(struct Tab*** tabs, int *tab_number, int *tab_amount, char* input, int max_size);
 void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, char* command);

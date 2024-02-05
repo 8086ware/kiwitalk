@@ -20,14 +20,14 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 	}
 
 	else if(strcmp(input_args[0], "/exit") == 0) {
+		tm_terminal_free(tab->window->terminal);
 		for(int i = 0; i < *tab_amount; i++) {
 			tm_win_free((*tabs)[i]->window);
 			free((*tabs)[i]);
 		}
 
 		free((*tabs));
-
-		tm_exit();
+	
 		exit(0);
 	}
 
@@ -55,7 +55,7 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 		}
 
 		else if(strcmp(input_args[1], "new") == 0) {
-			new_tab(tabs, tab_amount);
+			new_tab(tab->window->terminal, tabs, tab_amount);
 		}
 
 		else if(strcmp(input_args[1], "list") == 0) {
