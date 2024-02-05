@@ -85,11 +85,23 @@ void get_tab_input(struct Tab*** tabs, int tab_number, int tab_amount, char* com
 		}
 
 		else if(c.scroll_up) {
-			tm_win_scroll(tab->window_text, 2, TM_SCROLL_UP);
+			if(c.ctrl_down) {
+				tm_win_scroll(tab->window_text, 2, TM_SCROLL_LEFT);
+			}
+
+			else {
+				tm_win_scroll(tab->window_text, 2, TM_SCROLL_UP);
+			}
 		}
 
 		else if(c.scroll_down) {
-			tm_win_scroll(tab->window_text, 2, TM_SCROLL_DOWN);
+			if(c.ctrl_down) {
+				tm_win_scroll(tab->window_text, 2, TM_SCROLL_RIGHT);
+			}
+
+			else {
+				tm_win_scroll(tab->window_text, 2, TM_SCROLL_DOWN);
+			}
 		}
 	}
 }
