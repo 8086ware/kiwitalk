@@ -35,8 +35,12 @@ int main(void) {
 	signal(SIGPIPE, sigpipe_hndlr);
 #endif
 
-	tm_init();
-	tm_flags(TM_FLAG_SCROLL, 1);
+	Tm_terminal* terminal = tm_terminal();
+
+	int scr_cols, scr_rows;
+	tm_get_scrsize(&scr_cols, &scr_rows);
+	Tm_window* win = tm_window(terminal, 0, 0, scr_cols, scr_rows);
+	tm_win_flags(win, TM_FLAG_SCROLL, 1);
 
 	struct addrinfo hints, *servinfo = NULL;
 	memset(&hints, 0, sizeof(hints));
@@ -61,8 +65,8 @@ int main(void) {
 		return 1;
 	}
 
-	tm_print("Listening on port %s\nTitle: %s\n", KIWITALK_PORT, sc.server_title);
-	tm_update();
+	tm_win_print(win, "Listening on port %s\nTitle: %s\n", KIWITALK_PORT, sc.server_title);
+	tm_win_update(win);
 
 	char** names = NULL;
 
@@ -79,7 +83,7 @@ int main(void) {
 	s_poll[0].events = POLLIN;
 
 	while(1) {
-		tm_update();
+		tm_win_update(win);
 		for(int i = 0; i < poll_amount; i++) {
 			s_poll[i].revents = 0;
 		}
@@ -130,13 +134,13 @@ int main(void) {
 			char send_buf[4096];
 			int bytes_to_send = sprintf(send_buf, "JOIN\x1d%s\x1d", names[poll_amount - 1]);
 
-			tm_print("%s Joined server from %s\n", names[poll_amount - 1], ip);
+			tm_win_print(win, "%s Joined server from %s\n", names[poll_amount - 1], ip);
 
 			for(int i = 1; i < poll_amount; i++) {
 				send(s_poll[i].fd, send_buf, bytes_to_send, 0);
 			}
 
-			tm_update();
+			tm_win_update(win);
 		}
 
 		char send_buf[4096];
@@ -155,7 +159,7 @@ int main(void) {
 
 					if(strcmp(request_args[0], "MSG") == 0) {
 						bytes_to_send = sprintf(send_buf, "MSG\x1d%s\x1d%s\x1d", names[i], request_args[1]);
-						tm_print("Sending out MSG %s %s\n", names[i], request_args[1]);
+						tm_win_print(win, "Sending out MSG %s %s\n", names[i], request_args[1]);
 
 						for(int i = 1; i < poll_amount; i++) {
 							send(s_poll[i].fd, send_buf, bytes_to_send, 0);
@@ -165,7 +169,7 @@ int main(void) {
 					else if(strcmp(request_args[0], "LIST") == 0) {
 						bytes_to_send += sprintf(send_buf, "LIST\x1d");
 
-						tm_print("Sending out LIST %s\n", names[i]);
+						tm_win_print(win, "Sending out LIST %s\n", names[i]);
 
 						for(int i = 1; i < poll_amount; i++) {
 							bytes_to_send += sprintf(send_buf + bytes_to_send, "%s\x1d", names[i]);
@@ -177,7 +181,7 @@ int main(void) {
 					else if(strcmp(request_args[0], "TITLE") == 0) {
 						bytes_to_send += sprintf(send_buf, "TITLE\x1d%s\x1d", sc.server_title);
 
-						tm_print("Sending out TITLE %s\n", names[i]);
+						tm_win_print(win, "Sending out TITLE %s\n", names[i]);
 
 						send(s_poll[i].fd, send_buf, bytes_to_send, 0);
 					}
@@ -193,7 +197,7 @@ int main(void) {
 #endif
 					bytes_to_send = sprintf(send_buf, "LEFT\177%s", names[i]);
 
-					tm_print("Sending out LEFT %s\n", names[i]);
+					tm_win_print(win, "Sending out LEFT %s\n", names[i]);
 
 					char* temp = names[poll_amount - 1];
 					names[i] = temp;
