@@ -131,6 +131,10 @@ void process_tab_command(struct Tab*** tabs, int *tab_number, int* tab_amount, c
 			tm_win_clear(tab->window_text);
 	}
 
+	else {
+		tm_win_print(tab->window_text, "Unknown Command: %s\n", input_args[0]);
+	}
+
 	free(input_args);
 	tm_win_attrib(tab->window_text, TM_ATTRIB_FG_BRIGHTBLUE, 0);
 }
